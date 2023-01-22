@@ -25,8 +25,8 @@ def scrape(usr):
     #usr = input('[Required] - Whose followers do you want to scrape: ')
 
     options = webdriver.ChromeOptions()
-    #options.add_argument("--headless")
     options.add_argument('--no-sandbox')
+    options.add_argument("--headless")
     options.add_argument("--log-level=3")
     mobile_emulation = {
         "userAgent": "Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/90.0.1025.166 Mobile Safari/535.19"}
