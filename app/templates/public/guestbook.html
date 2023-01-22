@@ -1,0 +1,80 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+</head>
+<body>
+    <div class="mb-3">
+        <div class="form-group">
+            <label>Usuario</label>
+            <input type="text" class="form-control" id="usuario" placeholder="Enter your name">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+            <label>Puntos</label>
+            <input type="number" class="form-control" id="puntos" placeholder="Enter your points">
+        </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="submit_entry();">Confirmar</button>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Puntos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dom</td>
+                <td>Dom</td>
+            </tr>
+            <tr class="active-row">
+                <td>Melissa</td>
+                <td>5150</td>
+            </tr>
+            <!-- and so on... -->
+        </tbody>
+    </table> 
+</body>
+
+{% block script %}
+
+<script>
+
+    function submit_entry(){
+
+        var usuario = document.getElementById("usuario");
+        var puntos = document.getElementById("puntos");
+
+        var entry = {
+            usuario: usuario.value,
+            puntos: puntos.value
+        }
+
+        fetch(`${window.origin}/guestbook/create-entry`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify(entry),
+            cache: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+        })
+        .then(function (response){
+            if (response.status !== 200) {
+                console.log('Response status not 200');
+                return ;
+            }
+
+            response.json().then(function (data){
+                console.log(data)
+            })
+        })
+
+    }
+
+</script>
+
+{% endblock %}
