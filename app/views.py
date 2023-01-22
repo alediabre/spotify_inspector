@@ -19,12 +19,14 @@ def index():
 def view_following():
 
     lista = None
+    num = 0
 
     if request.args:
         usuario = request.args.get("usuario")
         lista = scrape(usuario)
+        num = len(lista)
     
-    return render_template("public/view_following.html", lista=lista, num=len(lista))
+    return render_template("public/view_following.html", lista=lista, num=num)
 
 
 
