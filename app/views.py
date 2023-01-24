@@ -2,6 +2,11 @@ from app import app
 from app import r
 from app import q
 from app.scrapy import scrape
+from app.graphs import get_graph
+from app.get_cookies import captura_cookies
+
+from multiprocessing import cpu_count
+from concurrent.futures import ThreadPoolExecutor
 
 from flask import render_template, request, jsonify, make_response
 
@@ -18,15 +23,27 @@ def index():
 @app.route("/view-following", methods=["GET","POST"])
 def view_following():
 
-    lista = None
-    num = 0
+    LOGGED = True
+    if LOGGED == False:
+        captura_cookies()
+
+    usuarios = scrape("coder.python21")
+    #usuarios = ["theeasyreps", "max_true"]
+
+    with ThreadPoolExecutor(max_workers=cpu_count()) as pool:
+        listas = pool.map(scrape,usuarios)
+
+    #listas = []
+    grafo = get_graph(usuarios)
 
     if request.args:
+        listas = []
         usuario = request.args.get("usuario")
+
         lista = scrape(usuario)
-        num = len(lista)
+        listas.append(lista)
     
-    return render_template("public/view_following.html", lista=lista, num=num)
+    return render_template("public/view_following.html", listas=listas, grafo=grafo)
 
 
 

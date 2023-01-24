@@ -33,17 +33,23 @@
         </div>
     </div>
 
+    {% if grafo %}
+    <img src="{{ url_for('static',filename='graphs/{}.png'.format(grafo) ) }}" alt="">
+    {% endif %}
+
     <div class="container">
         <div class="row">
             <div class="col">
                 <h5 class="mt-3 mb-3">Seguido</h5>
-                {% if lista %}
+                {% if listas %}
+                {% for lista in listas %}
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h6>Seguidos {{ num }}:</h6>
+                        <h6>Seguidos:</h6>
                         <p>{{ lista }}</p>
                     </div>
                 </div>
+                {% endfor %}
                 {% else %}
                 <p>Introduzca un usuario para obtener una lista</p>
                 {% endif %}
